@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>To-Do List</h1>
+    <form action="{{ url_for('add_task') }}" method="post">
+        <input type="text" name="title" placeholder="Task Title" required>
+        <input type="text" name="description" placeholder="Task Description">
+        <input type="date" name="deadline" placeholder="Deadline">
+        <button type="submit">Add Task</button>
+    </form>
+    <ul>
+        {% for task in tasks %}
+            <li>
+                <strong>{{ task.title }}</strong> - {{ task.description }} - {{ task.deadline }}
+                {% if task.completed %}
+                    <span>(Completed)</span>
+                {% else %}
+                    <a href="{{ url_for('complete_task', task_index=loop.index0) }}">Complete</a>
+                {% endif %}
+                <a href="{{ url_for('delete_task', task_index=loop.index0) }}">Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
